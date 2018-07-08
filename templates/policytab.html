@@ -1,0 +1,111 @@
+{% load staticfiles %}
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title></title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<meta name="generator" content="" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<link href="../static/css/haiersoft.css" rel="stylesheet" type="text/css" media="screen,print" />
+<link href="../static/css/print.css" rel="stylesheet" type="text/css" media="print" />
+<script src="../static/js/jquery-1.10.1.min.js"></script>
+<script src="../static/js/side.js" type="text/javascript"></script>
+
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+<![endif]-->
+</head>
+
+<body>
+
+<script type="text/javascript">
+$(function(){
+$(".select").each(function(){
+var s=$(this);
+var z=parseInt(s.css("z-index"));
+var dt=$(this).children("dt");
+var dd=$(this).children("dd");
+var _show=function(){dd.slideDown(200);dt.addClass("cur");s.css("z-index",z+1);};
+var _hide=function(){dd.slideUp(200);dt.removeClass("cur");s.css("z-index",z);};
+dt.click(function(){dd.is(":hidden")?_show():_hide();});
+dd.find("a").click(function(){dt.html($(this).html());_hide();});
+$("body").click(function(i){ !$(i.target).parents(".select").first().is(s) ? _hide():"";});})})
+</script>
+<!-- MainForm -->
+<div id="MainForm">
+
+
+</div>
+<div class="form_boxC">
+<table cellpadding="0" cellspacing="0">
+<tr>
+
+<td>
+<div class="selectbox" style="width:230px;">
+<dl class="select">
+<dt>请选择设备</dt>
+<dd><ul>
+    {% for i in firewalllist %}
+        <li><a href="#">{{ i.name }}</a></li>
+    {% endfor %}
+</ul></dd></dl>
+</div>
+</td>
+<td>
+   <div class="selectbox" style="width:230px;">
+    <dl class="select">
+    <dt>请选择策略类型</dt>
+    <dd><ul>
+    <li><a href="#">原始策略</a></li>
+    <li><a href="#">解析策略</a></li>
+    <li><a href="#">原子策略</a></li>
+    </ul></dd></dl>
+    </div>
+</td>
+<td>
+    <div class="btn_box floatR mag_l20"><input name="" type="button" value="查询" onMouseMove="this.className='input_move'" onMouseOut="this.className='input_out'"></div>
+</td>
+
+</tr>
+
+</table>
+</div>
+
+<div class="form_boxB">
+<h2>设备清单列表</h2>
+<table cellpadding="0" cellspacing="0">
+<tr>
+    <th>设备名称</th>
+    <th>策略ID</th>
+    <th>源地址</th>
+    <th>目的地址</th>
+    <th>目的端口</th>
+    <th>服务</th>
+</tr>
+
+
+{% for i in firewalllist %}
+    {% for j in i.policylist %}
+        <tr>
+        <td>{{ i.name }}</td>
+        <td>{{ j.srceth }}</td>
+        <td>{{ j.dsteth }}</td>
+        <td>{{ j.srcaddr }}</td>
+        <td>{{ j.dstaddr }}</td>
+        <td>{{ j.service}}</td>
+        </tr>
+    {% endfor %}
+{% endfor %}
+
+</table>
+<p class="msg">共找到{{ firewalllist |length }}条设备记录，当前显示从第1条至第10条</p>
+</div>
+</div>
+<!-- /MainForm -->
+
+</body>
+</html>
