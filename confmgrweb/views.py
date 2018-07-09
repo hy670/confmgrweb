@@ -18,5 +18,21 @@ def main(request):
 def tab(request):
     return  render(request,'tab.html',{'firewalllist':firewalllist})
 def policytab(request):
-    return  render(request,'policytab.html',{'firewalllist':firewalllist})
+    dev = request.GET.get('dev')
+    policytype = request.GET.get('policytype')
+    print(dev)
+    print(policytype)
+    if not dev and not policytype:
+        return  render(request,'policytab.html',{'firewalllist':firewalllist})
+    else:
+        for i in firewalllist:
+            if i.name==dev:
+                if policytype=='policylist':
+                    return render(request,'policytab.html',{'firewalllist':firewalllist,'dev':i.policylist})
+                elif policytype=='policydetaillist':
+                    return render(request,'policytab.html',{'firewalllist':firewalllist,'dev':i.policydetaillist})
+                elif policytype=='policymiclist':
+                    return render(request,'policytab.html',{'firewalllist':firewalllist,'dev':i.policymiclist})
+
+
 

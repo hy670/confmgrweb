@@ -23,53 +23,71 @@
 <body>
 
 <script type="text/javascript">
-$(function(){
-$(".select").each(function(){
-var s=$(this);
-var z=parseInt(s.css("z-index"));
-var dt=$(this).children("dt");
-var dd=$(this).children("dd");
-var _show=function(){dd.slideDown(200);dt.addClass("cur");s.css("z-index",z+1);};
-var _hide=function(){dd.slideUp(200);dt.removeClass("cur");s.css("z-index",z);};
-dt.click(function(){dd.is(":hidden")?_show():_hide();});
-dd.find("a").click(function(){dt.html($(this).html());_hide();});
-$("body").click(function(i){ !$(i.target).parents(".select").first().is(s) ? _hide():"";});})})
+$(function() {
+    $(".select").each(function () {
+        var s = $(this);
+        var z = parseInt(s.css("z-index"));
+        var dt = $(this).children("dt");
+        var dd = $(this).children("dd");
+        var _show = function () {
+            dd.slideDown(200);
+            dt.addClass("cur");
+            s.css("z-index", z + 1);
+        };
+        var _hide = function () {
+            dd.slideUp(200);
+            dt.removeClass("cur");
+            s.css("z-index", z);
+        };
+        dt.click(function () {
+            dd.is(":hidden") ? _show() : _hide();
+        });
+        dd.find("a").click(function () {
+            dt.html($(this).html());
+            _hide();
+        });
+        $("body").click(function (i) {
+            !$(i.target).parents(".select").first().is(s) ? _hide() : "";
+        });
+    });
+    $("#search").click(function () {
+        $.get("policytab.html", {dev:$("#devlist").val(),policytype:$("#policytype").val()}, function (result) {
+           $(document).find("html").html(result);
+        });
+    });
+})
+
 </script>
 <!-- MainForm -->
 <div id="MainForm">
 
 
-</div>
+
 <div class="form_boxC">
 <table cellpadding="0" cellspacing="0">
 <tr>
 
 <td>
 <div class="selectbox" style="width:230px;">
-<dl class="select">
-<dt>请选择设备</dt>
-<dd><ul>
-    {% for i in firewalllist %}
-        <li><a href="#">{{ i.name }}</a></li>
+<select name="devlist" id="devlist" class="selectbox"   >
+   {% for i in firewalllist %}
+        <option value={{ i.name }}>{{ i.name }}</option>
     {% endfor %}
-</ul></dd></dl>
+</select>
 </div>
 </td>
 <td>
    <div class="selectbox" style="width:230px;">
-    <dl class="select">
-    <dt>请选择策略类型</dt>
-    <dd><ul>
-    <li><a href="#">原始策略</a></li>
-    <li><a href="#">解析策略</a></li>
-    <li><a href="#">原子策略</a></li>
-    </ul></dd></dl>
+    <select name="policytype" id="policytype" class="selectbox"   >
+    <option value="policylist">原始策略</option>
+    <option value="policydetaillist">解析策略</option>
+    <option value="policymiclist">原子策略</option>
+</select>
     </div>
 </td>
 <td>
-    <div class="btn_box floatR mag_l20"><input name="" type="button" value="查询" onMouseMove="this.className='input_move'" onMouseOut="this.className='input_out'"></div>
+    <div class="btn_box floatR mag_l20"><input id="search" type="button" value="查询" onMouseMove="this.className='input_move'" onMouseOut="this.className='input_out'"></div>
 </td>
-
 </tr>
 
 </table>
@@ -79,19 +97,20 @@ $("body").click(function(i){ !$(i.target).parents(".select").first().is(s) ? _hi
 <h2>设备清单列表</h2>
 <table cellpadding="0" cellspacing="0">
 <tr>
-    <th>设备名称</th>
+
     <th>策略ID</th>
+    <th>源端口</th>
+    <th>目的端口</th>
     <th>源地址</th>
     <th>目的地址</th>
     <th>目的端口</th>
-    <th>服务</th>
+
 </tr>
 
 
-{% for i in firewalllist %}
-    {% for j in i.policylist %}
+    {% for j in dev %}
         <tr>
-        <td>{{ i.name }}</td>
+        <td>{{ j.name }}</td>
         <td>{{ j.srceth }}</td>
         <td>{{ j.dsteth }}</td>
         <td>{{ j.srcaddr }}</td>
@@ -99,10 +118,10 @@ $("body").click(function(i){ !$(i.target).parents(".select").first().is(s) ? _hi
         <td>{{ j.service}}</td>
         </tr>
     {% endfor %}
-{% endfor %}
 
 </table>
 <p class="msg">共找到{{ firewalllist |length }}条设备记录，当前显示从第1条至第10条</p>
+</div>
 </div>
 </div>
 <!-- /MainForm -->
