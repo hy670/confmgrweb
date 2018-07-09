@@ -237,7 +237,7 @@ class FGT800:
 
     def parseconffile(self):
         keyword = ''
-        f = open('./confmgrweb/FGT800.conf', 'r')
+        f = open('./confmgrweb/FGT800.conf', 'r',encoding='UTF-8')
         for line in f:
             # 设置对象关键字
             if 'config firewall address' in line.strip():
@@ -459,7 +459,7 @@ class USG800:
 
     def parseconffile(self):
         keyword = ''
-        f = open('./confmgrweb/219.txt', 'r')
+        f = open('./confmgrweb/220.txt', 'r',encoding='UTF-8')
         for line in f:
             if not line[0].isspace():
                 tokss = line.strip().split(' ')
