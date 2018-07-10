@@ -325,6 +325,7 @@ class FGT800:
         self.creatpolicymiclist()
 
     def redundantcheck(self):
+        redundantpolicylist= []
         for i in range(len(self.policymiclist)):
             for j in range(i + 1, len(self.policymiclist)):
                 if self.policymiclist[i].name != self.policymiclist[j].name:
@@ -333,15 +334,14 @@ class FGT800:
                         if IPy.IP(self.policymiclist[i].srcaddr).overlaps(self.policymiclist[j].srcaddr) == 1 or \
                                 IPy.IP(self.policymiclist[j].srcaddr).overlaps(self.policymiclist[i].srcaddr) == 1:
                             if IPy.IP(self.policymiclist[i].dstaddr).overlaps(self.policymiclist[j].dstaddr) == 1 or \
-                                    IPy.IP(self.policymiclist[j].srcaddr).overlaps(self.policymiclist[i].srcaddr) == 1:
+                                    IPy.IP(self.policymiclist[j].dstaddr).overlaps(self.policymiclist[i].dstaddr) == 1:
                                 if self.policymiclist[i].service == 'any' or self.policymiclist[j].service == 'any':
-                                    print("--------------------------------------------------------------")
-                                    self.policymiclist[i].printpolicymic()
-                                    self.policymiclist[j].printpolicymic()
+                                    redundantpolicylist.append(self.policymiclist[i])
+                                    redundantpolicylist.append(self.policymiclist[j])
                                 elif self.policymiclist[i].service == self.policymiclist[j].service:
-                                    print("--------------------------------------------------------------")
-                                    self.policymiclist[i].printpolicymic()
-                                    self.policymiclist[j].printpolicymic()
+                                    redundantpolicylist.append(self.policymiclist[i])
+                                    redundantpolicylist.append(self.policymiclist[j])
+        return redundantpolicylist
 
 
 class USG800:
@@ -513,6 +513,7 @@ class USG800:
         self.creatpolicymiclist()
 
     def redundantcheck(self):
+        redundantpolicylist = []
         for i in range(len(self.policymiclist)):
             for j in range(i + 1, len(self.policymiclist)):
                 if self.policymiclist[i].name != self.policymiclist[j].name:
@@ -521,16 +522,14 @@ class USG800:
                         if IPy.IP(self.policymiclist[i].srcaddr).overlaps(self.policymiclist[j].srcaddr) == 1 or \
                                 IPy.IP(self.policymiclist[j].srcaddr).overlaps(self.policymiclist[i].srcaddr) == 1:
                             if IPy.IP(self.policymiclist[i].dstaddr).overlaps(self.policymiclist[j].dstaddr) == 1 or \
-                                    IPy.IP(self.policymiclist[j].srcaddr).overlaps(self.policymiclist[i].srcaddr) == 1:
+                                    IPy.IP(self.policymiclist[j].dstaddr).overlaps(self.policymiclist[i].dstaddr) == 1:
                                 if self.policymiclist[i].service == 'any' or self.policymiclist[j].service == 'any':
-                                    print("--------------------------------------------------------------")
-                                    self.policymiclist[i].printpolicymic()
-                                    self.policymiclist[j].printpolicymic()
+                                    redundantpolicylist.append(self.policymiclist[i])
+                                    redundantpolicylist.append(self.policymiclist[j])
                                 elif self.policymiclist[i].service == self.policymiclist[j].service:
-                                    print("--------------------------------------------------------------")
-                                    self.policymiclist[i].printpolicymic()
-                                    self.policymiclist[j].printpolicymic()
-
+                                    redundantpolicylist.append(self.policymiclist[i])
+                                    redundantpolicylist.append(self.policymiclist[j])
+        return redundantpolicylist
 
 class NetAddr:
     def __init__(self, name, netaddr):

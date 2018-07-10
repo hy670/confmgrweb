@@ -25,5 +25,6 @@ urlpatterns = [
     url(r'^main.html', main, name='main'),
     url(r'^tab.html', tab, name='tab'),
     url(r'^policytab.html', policytab, name='policytab'),
+    url(r'^repolicytab.html', repolicytab, name='repolicytab'),
 
 ]

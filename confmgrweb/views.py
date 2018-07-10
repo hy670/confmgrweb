@@ -32,11 +32,32 @@ def policytab(request):
                     for j in i.policylist:
                         policydic={"id":j.name,"srceth":j.srceth,"dsteth":j.dsteth,"srcaddr":j.srcaddr,"dstaddr":j.dstaddr,"service":j.service}
                         policydiclist.append(policydic)
-                    print(policydiclist)
-
                     return JsonResponse({'policydic':policydiclist})
                 elif policytype == 'policydetaillist':
-                    return HttpResponse(  i.policydetaillist)
+                    policydiclist = []
+                    for j in i.policydetaillist:
+                        policydic = {"id": j.name, "srceth": j.srceth, "dsteth": j.dsteth, "srcaddr": j.srcaddr,
+                                     "dstaddr": j.dstaddr, "service": j.service}
+                        policydiclist.append(policydic)
+                    return JsonResponse( {'policydic':policydiclist})
                 elif policytype == 'policymiclist':
-                    return HttpResponse(i.policymiclist)
-
+                    policydiclist = []
+                    for j in i.policymiclist:
+                        policydic = {"id": j.name, "srceth": j.srceth, "dsteth": j.dsteth, "srcaddr": j.srcaddr,
+                                     "dstaddr": j.dstaddr, "service": j.service}
+                        policydiclist.append(policydic)
+                    return JsonResponse({'policydic': policydiclist})
+def repolicytab(request):
+    dev =request.GET.get("dev")
+    if not dev :
+        return render(request, 'repolicytab.html', {'firewalllist': firewalllist})
+    else:
+        for i in firewalllist:
+            if i.name == dev:
+                redundantpolicylist =i.redundantcheck()
+        policydiclist = []
+        for j in redundantpolicylist:
+            policydic = {"id": j.name, "srceth": j.srceth, "dsteth": j.dsteth, "srcaddr": j.srcaddr,
+                         "dstaddr": j.dstaddr, "service": j.service}
+            policydiclist.append(policydic)
+        return JsonResponse({'repolicytab': policydiclist})

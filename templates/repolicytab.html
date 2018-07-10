@@ -36,17 +36,16 @@ $(function(){
         $("body").click(function(i){ !$(i.target).parents(".select").first().is(s) ? _hide():"";});
     })
     $("#search").click(function () {
-        $.get("policytab.html",{"dev":$("#devlist").val(),"policytype":$("#policytype").val()},function (result) {
-
-             var tbody = "";
-            $.each((result.policydic),function(n,item) {
+        $.get("repolicytab.html",{"dev":$("#devlist").val()},function (result) {
+            var tbody = "";
+            alert(result.repolicytab.length)
+            $.each((result.repolicytab),function(n,item) {
                 var trs = "";
                 trs = "<tr> <td>" +item.id+"</td> <td>" + item.srceth +"</td > <td>" + item.dsteth +"</td > <td>" + item.srcaddr +"</td > <td>" + item.dstaddr +"</td > <td>" + item.service +"</td ></tr>";
                 tbody += trs;
                 });
             $("#policyitem").html("");
             $("#policyitem").append(tbody);
-
         });
 
     });
@@ -67,16 +66,6 @@ $(function(){
     {% endfor %}
 </select>
 </div>
-</td>
-<td>
-
-   <div class="selectbox" style="width:230px;">
-    <select id="policytype"，style="width:230px;">
-        <option value="policylist">原始策略</option>
-        <option value="policydetaillist">解析策略</option>
-        <option value="policymiclist">原子策略</option>
-    </select>
-    </div>
 </td>
 <td>
     <div class="btn_box floatR mag_l20"><input id="search" type="button" value="查询"></div>
