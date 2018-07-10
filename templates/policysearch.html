@@ -1,0 +1,114 @@
+{% load staticfiles %}
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title></title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<meta name="generator" content="" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<link href="../static/css/haiersoft.css" rel="stylesheet" type="text/css" media="screen,print" />
+<link href="../static/css/print.css" rel="stylesheet" type="text/css" media="print" />
+<script src="../static/js/jquery-1.10.1.min.js"></script>
+<script src="../static/js/side.js" type="text/javascript"></script>
+
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+<![endif]-->
+</head>
+
+<body>
+
+<script type="text/javascript">
+$(function(){
+    $(".select").each(function(){
+        var s=$(this);
+        var z=parseInt(s.css("z-index"));
+        var dt=$(this).children("dt");
+        var dd=$(this).children("dd");
+        var _show=function(){dd.slideDown(200);dt.addClass("cur");s.css("z-index",z+1);};
+        var _hide=function(){dd.slideUp(200);dt.removeClass("cur");s.css("z-index",z);};
+        dt.click(function(){dd.is(":hidden")?_show():_hide();});
+        dd.find("a").click(function(){dt.html($(this).html());_hide();});
+        $("body").click(function(i){ !$(i.target).parents(".select").first().is(s) ? _hide():"";});
+    })
+    $("#search").click(function () {
+       $.get("policysearch.html",{"srcaddr":$("#srcaddr").val(),"dstaddr":$("#dstaddr").val(),"service":$("#service").val()},function (result) {
+        alert(result)
+        var tbody = "";
+        $.each((result.searchpolicylist),function(n,item) {
+                var trs = "";
+                trs = "<tr> <td>" +item.dev+"</td> <td>" +item.id+"</td> <td>" + item.srceth +"</td > <td>" + item.dsteth +"</td > <td>" + item.srcaddr +"</td > <td>" + item.dstaddr +"</td > <td>" + item.service +"</td ></tr>";
+                tbody += trs;
+                });
+        $("#policyitem").html("");
+        $("#policyitem").append(tbody);
+        });
+
+    });
+})
+
+</script>
+<!-- MainForm -->
+<div id="MainForm">
+<div id="BtmMain">
+    <span class="ttl">策略</span>
+
+    <!-- txtbox -->
+    <div class="txtbox floatL mag_r20">
+    <span class="sttl">原地址：</span>
+    <input id="srcaddr" type="text" size="8">
+    </div>
+    <!-- /txtbox -->
+
+    <!-- txtbox -->
+    <div class="txtbox floatL mag_r20">
+    <span class="sttl">目的地址：</span>
+    <input id="dstaddr" type="text" size="8">
+    </div>
+    <!-- /txtbox -->
+    <!-- txtbox -->
+    <div class="txtbox floatL mag_r20">
+    <span class="sttl">服务：</span>
+    <input id="service" type="text" size="8">
+    </div>
+    <!-- /txtbox -->
+
+<!-- btn_box -->
+<div class="btn_box floatR mag_l20"><input id="search" type="button" value="查询" onMouseMove="this.className='input_move'" onMouseOut="this.className='input_out'"></div>
+<!-- /btn_box -->
+
+</div>
+
+<div class="form_boxB">
+<h2>设备清单列表</h2>
+<table  id="policytable"  cellpadding="0" cellspacing="0" >
+    <thead>
+        <tr>
+            <th>设备名称</th>
+            <th>策略ID</th>
+            <th>源安全域</th>
+            <th>目的安全域</th>
+            <th>源地址</th>
+            <th>目的地址</th>
+            <th>目的端口</th>
+        </tr>
+    </thead>
+    <tbody id="policyitem">
+
+    </tbody>
+
+
+
+
+</table>
+
+</div>
+</div>
+<!-- /MainForm -->
+
+</body>
+</html>

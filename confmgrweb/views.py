@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import JsonResponse
 from confmgrweb.settings import *
+from confmgrweb.graph import *
 import json
 
 from django.shortcuts import redirect
@@ -61,3 +62,28 @@ def repolicytab(request):
                          "dstaddr": j.dstaddr, "service": j.service}
             policydiclist.append(policydic)
         return JsonResponse({'repolicytab': policydiclist})
+def policysearch(request):
+    dstaddr = request.GET.get("dstaddr")
+    service = request.GET.get("service")
+    srcaddr =request.GET.get("srcaddr")
+
+    if not dstaddr and  not srcaddr:
+        return render(request, 'policysearch.html')
+    else:
+        if not srcaddr:
+            srcaddr = "0.0.0.0/0"
+        if not dstaddr:
+            dstaddr = "0.0.0.0/0"
+        if not service:
+            service = "any"
+        policydiclist = []
+        searchpolicydic = searchpolicy(topology,netaddrlist,srcaddr,dstaddr,service)
+        for j in firewalllist:
+
+            if j.name in searchpolicydic:
+                policy =searchpolicydic[j.name]
+                for k in policy:
+                    policydic = {"dev":j.name,"id": k.name, "srceth": k.srceth, "dsteth": k.dsteth, "srcaddr": k.srcaddr,
+                         "dstaddr": k.dstaddr, "service": k.service}
+                    policydiclist.append(policydic)
+        return JsonResponse({'searchpolicylist': policydiclist})
