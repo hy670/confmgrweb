@@ -87,3 +87,18 @@ def policysearch(request):
                          "dstaddr": k.dstaddr, "service": k.service}
                     policydiclist.append(policydic)
         return JsonResponse({'searchpolicylist': policydiclist})
+
+def policyzmbie(request):
+    dev =request.GET.get("dev")
+    if not dev :
+        return render(request, 'policyzmbie.html', {'firewalllist': firewalllist})
+    else:
+        for i in firewalllist:
+            if i.name == dev:
+                zmbiepolicylist =iszmbiepolicy(topology,i,netaddrlist)
+        policydiclist = []
+        for j in zmbiepolicylist:
+            policydic = {"id": j.name, "srceth": j.srceth, "dsteth": j.dsteth, "srcaddr": j.srcaddr,
+                         "dstaddr": j.dstaddr, "service": j.service}
+            policydiclist.append(policydic)
+        return JsonResponse({'zmbiepolicytab': policydiclist})

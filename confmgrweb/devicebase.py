@@ -461,7 +461,7 @@ class USG800:
 
     def parseconffile(self):
         keyword = ''
-        f = open('./confmgrweb/219.txt', 'r',encoding='UTF-8')
+        f = open('./confmgrweb/220.txt', 'r',encoding='UTF-8')
         for line in f:
             if not line[0].isspace():
                 tokss = line.strip().split(' ')

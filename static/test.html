@@ -1,0 +1,112 @@
+{% load staticfiles %}
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title></title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<meta name="generator" content="" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<link href="../static/css/haiersoft.css" rel="stylesheet" type="text/css" media="screen,print" />
+<link href="../static/css/print.css" rel="stylesheet" type="text/css" media="print" />
+<script src="../static/js/jquery-1.10.1.min.js"></script>
+<script src="../static/js/side.js" type="text/javascript"></script>
+
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+<![endif]-->
+</head>
+
+<body>
+
+<script type="text/javascript">
+$(function(){
+$(".select").each(function(){
+var s=$(this);
+var z=parseInt(s.css("z-index"));
+var dt=$(this).children("dt");
+var dd=$(this).children("dd");
+var _show=function(){dd.slideDown(200);dt.addClass("cur");s.css("z-index",z+1);};
+var _hide=function(){dd.slideUp(200);dt.removeClass("cur");s.css("z-index",z);};
+dt.click(function(){dd.is(":hidden")?_show():_hide();});
+dd.find("a").click(function(){dt.html($(this).html());_hide();});
+});
+$("#search1").click( function(){alert($("#devlist").val()+$("#policytype").val());});
+});
+	
+
+</script>
+<!-- MainForm -->
+<div id="MainForm">
+
+
+</div>
+<div class="form_boxC">
+<table cellpadding="0" cellspacing="0">
+<tr>
+
+<td>
+<div class="selectbox" style="width:230px;">
+<select name="devlist" id="devlist" class="selectbox"   >
+    <option value="1">ALL</option>
+    <option value="2">USG800</option>
+    <option value="3">FGT800</option>
+    <option value="4">ISG1000</option>
+</select>
+</div>
+</td>
+<td>
+   <div class="selectbox" style="width:230px;">
+    <select name="policytype" id="policytype" class="selectbox"   >
+    <option value="policlist">ԭʼ����</option>
+    <option value="policy">8:30-9:00</option>
+    <option value="3">9:00-9:30</option>
+</select>
+    </div>
+</td>
+<td>
+    <div class="btn_box floatR mag_l20"><input id="search1" type="button" value="查询" ></div>
+</td>
+
+</tr>
+
+</table>
+</div>
+
+<div class="form_boxB">
+<h2>�豸�嵥�б�</h2>
+<table cellpadding="0" cellspacing="0">
+<tr>
+    <th>�豸����</th>
+    <th>����ID</th>
+    <th>Դ��ַ</th>
+    <th>Ŀ�ĵ�ַ</th>
+    <th>Ŀ�Ķ˿�</th>
+    <th>����</th>
+</tr>
+
+
+{% for i in firewalllist %}
+    {% for j in i.policylist %}
+        <tr>
+        <td>{{ i.name }}</td>
+        <td>{{ j.srceth }}</td>
+        <td>{{ j.dsteth }}</td>
+        <td>{{ j.srcaddr }}</td>
+        <td>{{ j.dstaddr }}</td>
+        <td>{{ j.service}}</td>
+        </tr>
+    {% endfor %}
+{% endfor %}
+
+</table>
+<p class="msg">���ҵ�{{ firewalllist |length }}���豸��¼����ǰ��ʾ�ӵ�1������10��</p>
+</div>
+</div>
+<!-- /MainForm -->
+
+</body>
+</html>
